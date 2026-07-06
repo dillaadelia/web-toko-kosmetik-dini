@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Kontak - Dini beauty store</title>
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="bootstrap/css/dataTables.bootstrap.min.css" rel="stylesheet">
+  <link href="bootstrap/css/styles.css" rel="stylesheet">
+  <style>
+    body { padding-top: 60px; }
+    .contact-info {
+      margin-bottom: 20px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      text-align: center;
+      height: 100%;
+      transition: all 0.3s ease;
+    }
+    .contact-info:hover {
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .contact-info h4 {
+      margin-top: 15px;
+      margin-bottom: 10px;
+    }
+    .contact-info .map-link {
+      display: inline-block;
+      margin-top: 8px;
+      color: #c44569;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .contact-info .map-link:hover {
+      color: #8a2a47;
+      text-decoration: underline;
+    }
+    .contact-info .map-link svg {
+      width: 18px;
+      height: 18px;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+    .footer-custom {
+      margin-top: 30px;
+      padding-top: 20px;
+      padding-bottom: 15px;
+      background-color: #f8f8f8;
+      border-top: 1px solid #e7e7e7;
+    }
+    .footer-custom hr {
+      margin-top: 15px;
+      margin-bottom: 10px;
+    }
+    .footer-custom h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .footer-custom .list-group-item {
+      background-color: transparent;
+      border: none;
+      padding: 5px 0;
+    }
+    .footer-custom a {
+      color: #333;
+    }
+    .footer-custom a:hover {
+      color: #c44569;
+      text-decoration: none;
+    }
+    .social-media-section {
+      padding: 15px 0;
+    }
+    .social-media-section .social-icon-lg {
+      display: inline-block;
+      margin: 0 15px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      vertical-align: middle;
+    }
+    .social-media-section .social-icon-lg:hover {
+      transform: translateY(-5px);
+    }
+    .social-media-section .social-icon-lg svg {
+      width: 48px;
+      height: 48px;
+      display: block;
+    }
+    .social-media-section .social-icon-lg.fb svg { fill: #1877f2; }
+    .social-media-section .social-icon-lg.ig svg { fill: #e4405f; }
+    .social-media-section .social-icon-lg.tt svg { fill: #000000; }
+    .social-media-section .social-icon-lg.fb:hover svg { fill: #0d65d9; }
+    .social-media-section .social-icon-lg.ig:hover svg { fill: #c13584; }
+    .social-media-section .social-icon-lg.tt:hover svg { fill: #25f4ee; }
+    @media (max-width: 480px) {
+      .social-media-section .social-icon-lg svg {
+        width: 36px;
+        height: 36px;
+      }
+      .social-media-section .social-icon-lg {
+        margin: 0 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mainNavbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Dini beauty store</a>
+    </div>
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="tentang.html">Tentang</a></li>
+        <li><a href="galeri.html">Galeri</a></li>
+        <li class="active"><a href="kontak.html">Kontak</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HALAMAN KONTAK -->
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          
+          <h2 class="text-muted">Hubungi Kami</h2>
+          <hr/>
+          <p>Ada pertanyaan atau butuh bantuan? Silakan hubungi kami melalui informasi kontak di bawah ini. Kami siap membantu Anda 24/7.</p>
+
+          <div class="row">
+            <!-- Alamat -->
+            <div class="col-md-4">
+              <div class="contact-info">
+                <h4>📍 Alamat Toko</h4>
+                <p>Desa Gohor Lama<br/>Kecamatan Wampu, Kabupaten Langkat<br/>Sumatera Utara</p>
+                <a href="https://maps.google.com/maps?q=Desa+Gohor+Lama+Kecamatan+Wampu+Kabupaten+Langkat+Sumatera+Utara" target="_blank" class="map-link">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                  </svg>
+                  Buka di Google Maps
+                </a>
+              </div>
+            </div>
+            
+            <!-- Telepon/WA -->
+            <div class="col-md-4">
+              <div class="contact-info">
+                <h4>📞 Telepon & WhatsApp</h4>
+                <p>0831-1664-0192</p>
+                <p><small>Senin - Sabtu, 09:00 - 21:00</small></p>
+                <a href="https://wa.me/6283116640192" target="_blank" class="btn btn-success btn-sm">
+                  <i class="glyphicon glyphicon-phone"></i> Chat WhatsApp
+                </a>
+              </div>
+            </div>
+            
+            <!-- Email -->
+            <div class="col-md-4">
+              <div class="contact-info">
+                <h4>✉️ Email</h4>
+                <p>cs@dinibeauty.id<br/>admin@dinibeauty.id</p>
+                <p><small>Balasan 1x24 jam</small></p>
+              </div>
+            </div>
+          </div>
+
+          <hr/>
+
+          <!-- SOSIAL MEDIA -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="contact-info" style="background-color: #f5f5f5;">
+                <h4>🌐 Ikuti Kami di Sosial Media</h4>
+                <p style="margin-bottom: 15px;">Dapatkan update produk terbaru, promo eksklusif, dan tips perawatan kulit</p>
+                <div class="social-media-section">
+                  <a href="https://www.facebook.com/share/18viVo2Zuv/?mibextid=wwXIfr" target="_blank" class="social-icon-lg fb" title="Facebook">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                  </a>
+                  <a href="https://www.instagram.com/dinifashion.id_?igsh=MXN0MzJjb2UwcnlpMg==" target="_blank" class="social-icon-lg ig" title="Instagram">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                    </svg>
+                  </a>
+                  <a href="https://www.tiktok.com/@diniamanda42?_r=1&_t=ZS-97Q4frYU112" target="_blank" class="social-icon-lg tt" title="TikTok">
+                    <svg viewBox="0 0 16 16">
+                      <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"/>
+                    </svg>
+                  </a>
+                </div>
+                <p style="margin-top: 10px; color: #888;">
+                  <small>Follow us for updates! 🎀</small>
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer-custom">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Promo Terbaru</h3>
+        <ul class="list-group">
+          <li class="list-group-item"><a href="#">Diskon 20% untuk member baru</a></li>
+          <li class="list-group-item"><a href="#">Beli 2 hemat 20% + gift skincare</a></li>
+          <li class="list-group-item"><a href="#">Gratis ongkir min belanja 150k</a></li>
+        </ul>
+      </div>
+      
+      <div class="col-md-4">
+        <h3>Informasi Toko</h3>
+        <ul class="list-group">
+          <li class="list-group-item"><a href="#">Cara Pembayaran & Pengiriman</a></li>
+          <li class="list-group-item"><a href="#">Kebijakan Pengembalian Barang</a></li>
+          <li class="list-group-item"><a href="#">FAQ - Pertanyaan Umum</a></li>
+        </ul>
+      </div>
+      
+      <div class="col-md-4">
+        <h3>Link Terkait</h3>
+        <ul class="list-group">
+          <li class="list-group-item"><a href="#">Semua Produk Skincare</a></li>
+          <li class="list-group-item"><a href="#">Semua Produk Makeup</a></li>
+          <li class="list-group-item"><a href="#">Artikel Perawatan Kulit</a></li>
+          <li class="list-group-item"><a href="#">Hubungi Customer Service</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <hr/>
+    
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p>Copyright &copy; 2025 Dini beauty store - Toko Kecantikan Online</p>
+        <p>
+          <a href="index.html">Home</a> | 
+          <a href="tentang.html">Tentang Kami</a> | 
+          <a href="kontak.html">Kontak Kami</a> |
+          <a href="galeri.html">Galeri</a>
+        </p>
+        <p>📍 Desa Gohor Lama, Kecamatan Wampu, Kabupaten Langkat, Sumatera Utara</p>
+        <p>📱 WhatsApp: 0831-1664-0192</p>
+        <p>
+          <span class="label label-danger">PERHATIAN:</span>
+          Semua produk Dini beauty store 100% original dan bersertifikat BPOM & Halal.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="bootstrap/js/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Dini beauty store - Official Store</title>
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { padding-top: 60px; background: #f8f9fa; }
+    .footer-custom { margin-top: 30px; padding-top: 20px; padding-bottom: 15px; background-color: #f8f8f8; border-top: 1px solid #e7e7e7; }
+    .footer-custom a { color: #333; }
+    .footer-custom a:hover { color: #c44569; text-decoration: none; }
+    
+    .product-item .thumbnail { transition: transform 0.3s; border-radius: 12px; overflow: hidden; }
+    .product-item .thumbnail:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
+    .product-item .thumbnail img { height: 200px; width: 100%; object-fit: cover; }
+    
+    .product-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 380px; max-width: 94%; background: #fff; border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,0.3); padding: 24px; z-index: 9999; display: none; border: 1px solid #eee; max-height: 90vh; overflow-y: auto; }
+    .product-popup .popup-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; padding-bottom: 12px; margin-bottom: 16px; }
+    .product-popup .popup-header .close-popup { background: none; border: none; font-size: 24px; color: #999; cursor: pointer; }
+    .product-popup .popup-body { text-align: center; padding: 10px 0; }
+    .product-popup .popup-body img { width: 120px; height: 120px; object-fit: cover; border-radius: 12px; border: 1px solid #eee; margin-bottom: 12px; }
+    .product-popup .popup-body .product-name { font-size: 18px; font-weight: 700; }
+    .product-popup .popup-body .product-price { font-size: 22px; font-weight: 700; color: #c44569; }
+    .product-popup .popup-actions { display: flex; gap: 8px; margin-top: 16px; padding-top: 14px; border-top: 1px solid #f0f0f0; }
+    .product-popup .popup-actions .btn { border-radius: 40px; font-weight: 600; padding: 10px; font-size: 13px; border: none; flex: 1; cursor: pointer; }
+    .product-popup .popup-actions .btn-cancel { background: #f5f5f5; border: 1px solid #ddd; color: #555; }
+    .product-popup .popup-actions .btn-cart { background: #ff9800; color: #fff; }
+    .product-popup .popup-actions .btn-buy { background: #c44569; color: #fff; }
+    .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 9998; display: none; }
+    
+    .cart-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 420px; max-width: 94%; background: #fff; border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,0.3); padding: 24px; z-index: 9999; display: none; border: 1px solid #eee; max-height: 90vh; overflow-y: auto; }
+    .cart-popup .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; padding-bottom: 12px; }
+    .cart-popup .cart-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+    .cart-popup .cart-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; }
+    .cart-popup .cart-item .item-info { flex: 1; }
+    .cart-popup .cart-item .btn-delete { background: none; border: none; color: #ccc; font-size: 18px; cursor: pointer; }
+    .cart-popup .cart-item .btn-delete:hover { color: #c44569; }
+    .cart-popup .cart-total { display: flex; justify-content: space-between; margin-top: 16px; padding-top: 14px; border-top: 2px solid #f0f0f0; font-weight: 700; font-size: 18px; }
+    .cart-popup .cart-total .total-price { color: #c44569; }
+    .cart-popup .empty-cart { text-align: center; color: #999; padding: 30px 0; }
+    .cart-popup .cart-actions { display: flex; gap: 8px; margin-top: 16px; }
+    .cart-popup .cart-actions .btn { flex: 1; border-radius: 40px; font-weight: 600; padding: 10px 0; border: none; cursor: pointer; }
+    .cart-popup .cart-actions .btn-empty { background: #f5f5f5; border: 1px solid #ddd; color: #555; }
+    .cart-popup .cart-actions .btn-checkout { background: #c44569; color: #fff; }
+    
+    .notification-toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: #2d2d2d; color: #fff; padding: 14px 30px; border-radius: 40px; font-size: 16px; font-weight: 500; z-index: 99999; box-shadow: 0 6px 20px rgba(0,0,0,0.3); display: none; text-align: center; max-width: 90%; border-left: 5px solid #c44569; }
+    .notification-toast span { color: #ffb3c6; }
+    
+    .nav-icon { display: flex; align-items: center; gap: 5px; padding: 8px 12px; border-radius: 20px; color: #333 !important; text-decoration: none; font-size: 14px; }
+    .nav-icon:hover { background: #f5f5f5; text-decoration: none; color: #333 !important; }
+    .nav-icon .badge-icon { background: #c44569; color: #fff; border-radius: 50%; padding: 1px 7px; font-size: 11px; font-weight: 700; min-width: 20px; text-align: center; }
+    
+    .btn-primary { background: #c44569; border-color: #c44569; }
+    .btn-primary:hover { background: #a83456; border-color: #a83456; }
+    
+    /* ========================================
+       CAROUSEL FIX - AUTO SLIDE
+       ======================================== */
+    #heroCarousel {
+      position: relative;
+      overflow: hidden;
+    }
+    #heroCarousel .carousel-inner {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+    #heroCarousel .carousel-inner .item {
+      position: relative;
+      display: none;
+      transition: left 0.6s ease-in-out;
+    }
+    #heroCarousel .carousel-inner .item.active {
+      display: block;
+    }
+    #heroCarousel .carousel-inner .item img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+    }
+    .carousel-caption {
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      position: absolute;
+      bottom: 20%;
+      left: 10%;
+      right: 10%;
+      z-index: 10;
+    }
+    .carousel-caption h1 { font-size: 48px; font-weight: 700; }
+    .carousel-caption p { font-size: 20px; }
+    .carousel-caption .btn { border-radius: 40px; padding: 12px 35px; font-weight: 600; }
+    
+    .carousel-control {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 15;
+      display: block;
+      width: 50px;
+      height: 50px;
+      background: rgba(0,0,0,0.4) !important;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 50px;
+      color: white !important;
+      font-size: 28px;
+      opacity: 0.7;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .carousel-control:hover {
+      opacity: 1;
+      background: rgba(196,69,105,0.8) !important;
+    }
+    .carousel-control.left { left: 20px; }
+    .carousel-control.right { right: 20px; }
+    .carousel-control .glyphicon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    .carousel-indicators {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 15;
+      list-style: none;
+      padding: 0;
+      display: flex;
+      gap: 10px;
+    }
+    .carousel-indicators li {
+      display: block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      cursor: pointer;
+      border: none;
+    }
+    .carousel-indicators li.active {
+      background: #c44569;
+    }
+    
+    .qty-control { display: flex; align-items: center; gap: 8px; justify-content: center; margin: 10px 0; }
+    .qty-control button { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #ddd; background: #fafafa; font-weight: 700; font-size: 18px; cursor: pointer; }
+    .qty-control input { width: 50px; height: 34px; text-align: center; border: 1px solid #ddd; border-radius: 8px; font-weight: 600; font-size: 16px; }
+    
+    @media (max-width:767px) { 
+      #heroCarousel .carousel-inner .item img { height: 300px; }
+      .carousel-caption h1 { font-size: 28px; }
+      .carousel-caption p { font-size: 14px; }
+      .carousel-control { width: 35px; height: 35px; line-height: 35px; font-size: 18px; }
+      .carousel-control.left { left: 5px; }
+      .carousel-control.right { right: 5px; }
+    }
+    @media (max-width:480px) { 
+      #heroCarousel .carousel-inner .item img { height: 200px; }
+      .carousel-caption h1 { font-size: 20px; }
+      .carousel-caption p { font-size: 12px; }
+      .carousel-caption .btn { padding: 8px 20px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Notification -->
+<div id="notificationToast" class="notification-toast">✅ <span id="notifMessage">Pesanan berhasil!</span> Total: <span id="notifTotal">Rp 0</span></div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mainNavbar">
+        <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Dini beauty store</a>
+    </div>
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" id="cartNavBtn" class="nav-icon">🛒 <span class="badge-icon" id="cartBadge">0</span></a></li>
+        <li><a href="#" id="orderNavBtn" class="nav-icon">🚚 <span class="badge-icon" id="orderBadge">0</span></a></li>
+        <li class="active"><a href="index.html">Home</a></li>
+        <li><a href="tentang.html">Tentang</a></li>
+        <li><a href="galeri.html">Galeri</a></li>
+        <li><a href="kontak.html">Kontak</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ========================================
+     CAROUSEL - AUTO SLIDE OTOMATIS
+     ======================================== -->
+<div id="heroCarousel" class="carousel slide">
+  <!-- Indicators -->
+  <ol class="carousel-indicators" id="carouselIndicators">
+    <li class="active" data-slide="0"></li>
+    <li data-slide="1"></li>
+    <li data-slide="2"></li>
+  </ol>
+  
+  <!-- Slides -->
+  <div class="carousel-inner">
+    <div class="item active">
+      <img src="media/back.jpeg" onerror="this.src='https://placehold.co/1920x600/f8d0df/c44569?text=Skincare+Premium'">
+      <div class="carousel-caption">
+        <h1>Glow Up Your Skin</h1>
+        <p>Rangkaian skincare terbaru dengan bahan aktif berkualitas</p>
+        <a href="#produk" class="btn btn-danger btn-lg">Shop Now →</a>
+      </div>
+    </div>
+    <div class="item">
+      <img src="media/back1.jpeg" onerror="this.src='https://placehold.co/1920x600/f5d0df/c44569?text=Makeup+Collection'">
+      <div class="carousel-caption">
+        <h1>Flawless Makeup</h1>
+        <p>Lipstik, foundation, dan eyeshadow tahan lama</p>
+        <a href="#produk" class="btn btn-danger btn-lg">Lihat Koleksi</a>
+      </div>
+    </div>
+    <div class="item">
+      <img src="media/back2.jpeg" onerror="this.src='https://placehold.co/1920x600/fad9e5/c44569?text=Diskon+Spesial'">
+      <div class="carousel-caption">
+        <h1>Special Promo 30% OFF</h1>
+        <p>Beli 2 produk hemat 20% + gratis masker sheet</p>
+        <a href="#produk" class="btn btn-danger btn-lg">Klaim Promo</a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Controls -->
+  <a class="left carousel-control" id="carouselPrev">
+    <span class="glyphicon glyphicon-chevron-left"></span>
+  </a>
+  <a class="right carousel-control" id="carouselNext">
+    <span class="glyphicon glyphicon-chevron-right"></span>
+  </a>
+</div>
+
+<!-- Promo -->
+<div class="container">
+  <div class="jumbotron" style="background:linear-gradient(120deg,#ffdce8,#fff0f5);border-radius:16px;padding:30px;">
+    <h2>FLASH SALE 40% OFF</h2>
+    <p style="font-size:18px;">Serum Vitamin C + Sunscreen Bundle hanya Rp279.000 (normal Rp465.000). <strong>Kode: GLOW40</strong></p>
+  </div>
+</div>
+
+<!-- Products -->
+<div class="container" id="produk">
+  <h2 class="text-muted">Best Seller Products</h2>
+  <p style="margin-bottom:30px;">Produk favorit pelanggan kami dengan rating 4.9/5</p>
+  <div class="row">
+    <div class="col-md-3 col-sm-6 product-item" data-name="Rexona" data-price="20000" data-img="media/produk1.jpeg">
+      <div class="thumbnail">
+        <img src="media/produk1.jpeg" onerror="this.src='https://placehold.co/500x500/f9e3ec/c44569?text=Rexona'">
+        <div class="caption">
+          <h4>Rexona</h4>
+          <p><strong>Rp 20.000</strong> <del>Rp 45.000</del></p>
+          <p>Mencerahkan ketiak dan menyehatkan kulit</p>
+          <button class="btn btn-primary btn-sm btn-beli" onclick="openPopup(this)">Beli Sekarang</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 product-item" data-name="Sunscreen" data-price="25000" data-img="media/produk2.jpeg">
+      <div class="thumbnail">
+        <img src="media/produk2.jpeg" onerror="this.src='https://placehold.co/500x500/f8dfe8/c44569?text=Sunscreen'">
+        <div class="caption">
+          <h4>Sunscreen</h4>
+          <p><strong>Rp 25.000</strong> <del>Rp 55.000</del></p>
+          <p>Melindungi kulit wajah dari sinar UV</p>
+          <button class="btn btn-primary btn-sm btn-beli" onclick="openPopup(this)">Beli Sekarang</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 product-item" data-name="Cusion" data-price="80000" data-img="media/cusion.jpeg">
+      <div class="thumbnail">
+        <img src="media/cusion.jpeg" onerror="this.src='https://placehold.co/500x500/fae1ea/c44569?text=Cusion'">
+        <div class="caption">
+          <h4>Cusion</h4>
+          <p><strong>Rp 80.000</strong> <del>Rp 129.000</del></p>
+          <p>Make up premium cocok untuk segala jenis kulit</p>
+          <button class="btn btn-primary btn-sm btn-beli" onclick="openPopup(this)">Beli Sekarang</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 product-item" data-name="Sunscreen Wardah" data-price="38000" data-img="media/wardah.jpeg">
+      <div class="thumbnail">
+        <img src="media/wardah.jpeg" onerror="this.src='https://placehold.co/500x500/fcdce8/c44569?text=Wardah'">
+        <div class="caption">
+          <h4>Sunscreen Wardah</h4>
+          <p><strong>Rp 38.000</strong> <del>Rp 60.000</del></p>
+          <p>Melindungi wajah dari sinar UV</p>
+          <button class="btn btn-primary btn-sm btn-beli" onclick="openPopup(this)">Beli Sekarang</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3 col-sm-6 product-item" data-name="Nivea Men" data-price="25000" data-img="media/nivea men.jpeg">
+      <div class="thumbnail">
+        <img src="media/nivea men.jpeg" onerror="this.src='https://placehold.co/500x500/f4e2ea/c44569?text=Nivea'">
+        <div class="caption">
+          <h4>Nivea Men</h4>
+          <p><strong>Rp 25.000</strong> <del>Rp 45.000</del></p>
+          <p>Melembapkan kulit ketiak dan menghilangkan bau</p>
+          <button class="btn btn-primary btn-sm btn-beli" onclick="openPopup(this)">Beli Sekarang</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 product-item" data-name="Scora" data-price="33000" data-img="media/scora.jpeg">
+      <div class="thumbnail">
+        <img src="media/scora.jpeg" onerror="this.src='https://placehold.co/500x500/f9e1ec/c44569?text=Scora'">
+        <div class="caption">
+          <h4>Scora</h4>
+          <p><strong>Rp 33.000</strong> <del>Rp 50.000</del></p>
+          <p>Mencerahkan kulit wajah dan menyamarkan noda</p>
+          <button class="btn btn-primary btn-sm btn-beli" onclick="openPopup(this)">Beli Sekarang</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 product-item" data-name="Glow2Glow" data-price="98000" data-img="media/produk6.jpeg">
+      <div class="thumbnail">
+        <img src="media/produk6.jpeg" onerror="this.src='https://placehold.co/500x500/fbdce6/c44569?text=Glow2Glow'">
+        <div class="caption">
+          <h4>Glow2Glow</h4>
+          <p><strong>Rp 98.000</strong> <del>Rp 100.000</del></p>
+          <p>Berbagai manfaat untuk kulit anda</p>
+          <button class="btn btn-primary btn-sm btn-beli" onclick="openPopup(this)">Beli Sekarang</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Features -->
+<div class="container">
+  <div class="panel panel-default" style="border-radius:16px;">
+    <div class="panel-body" style="padding:30px;">
+      <h2 class="text-muted">Mengapa Dini beauty store?</h2>
+      <div class="row text-center">
+        <div class="col-md-3 col-sm-6"><h4>100% Original</h4><p>Produk asli dari distributor resmi</p></div>
+        <div class="col-md-3 col-sm-6"><h4>Gratis Ongkir</h4><p>Minimal belanja 150rb</p></div>
+        <div class="col-md-3 col-sm-6"><h4>Konsultasi Gratis</h4><p>Beauty advisor 24/7</p></div>
+        <div class="col-md-3 col-sm-6"><h4>BPOM & Halal</h4><p>Semua produk tersertifikasi</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer-custom">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p>Copyright &copy; 2025 Dini beauty store - Toko Kecantikan Online</p>
+        <p><a href="index.html">Home</a> | <a href="tentang.html">Tentang</a> | <a href="kontak.html">Kontak</a> | <a href="galeri.html">Galeri</a></p>
+        <p>📍 Desa Gohor Lama, Kecamatan Wampu, Kabupaten Langkat, Sumatera Utara</p>
+        <p>📱 WhatsApp: 0831-1664-0192</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popup Product -->
+<div class="popup-overlay" id="popupOverlay"></div>
+<div class="product-popup" id="productPopup">
+  <div class="popup-header">
+    <h5>🛍️ Pilih Produk</h5>
+    <button class="close-popup" id="closePopupBtn" onclick="closePopup()">✕</button>
+  </div>
+  <div class="popup-body">
+    <img id="popupImg" src="">
+    <div class="product-name" id="popupName">Nama Produk</div>
+    <div class="product-price" id="popupPrice">Rp 0</div>
+    <div class="qty-control">
+      <button onclick="qtyMinus()">−</button>
+      <input type="number" id="popupQty" value="1" min="1" max="99">
+      <button onclick="qtyPlus()">+</button>
+    </div>
+  </div>
+  <div class="popup-actions">
+    <button class="btn btn-cancel" id="popupCancel" onclick="closePopup()">Batal</button>
+    <button class="btn btn-cart" id="popupCart" onclick="addToCart()">➕ Keranjang</button>
+    <button class="btn btn-buy" id="popupBuy" onclick="buyNow()">Beli</button>
+  </div>
+</div>
+
+<!-- Cart Popup -->
+<div class="popup-overlay" id="cartOverlay"></div>
+<div class="cart-popup" id="cartPopup">
+  <div class="cart-header">
+    <h5>🛒 Keranjang Belanja</h5>
+    <button class="close-cart" id="closeCartBtn" onclick="closeCart()">✕</button>
+  </div>
+  <div id="cartContent"><div class="empty-cart"><span>🛒</span>Keranjang masih kosong</div></div>
+  <div class="cart-total"><span>Total</span><span class="total-price" id="cartTotalPrice">Rp 0</span></div>
+  <div class="cart-actions">
+    <button class="btn btn-empty" id="emptyCartBtn" onclick="emptyCart()">🗑️ Kosongkan</button>
+    <button class="btn btn-checkout" id="checkoutCartBtn" onclick="checkout()">✅ Checkout</button>
+  </div>
+</div>
+
+<!-- Order Popup -->
+<div class="popup-overlay" id="orderOverlay"></div>
+<div class="cart-popup" id="orderPopup">
+  <div class="cart-header">
+    <h5>🚚 Pesanan Saya</h5>
+    <button class="close-cart" id="closeOrderBtn" onclick="closeOrder()">✕</button>
+  </div>
+  <div id="orderContent"><div class="empty-cart"><span>📦</span>Belum ada pesanan</div></div>
+</div>
+
+<script src="bootstrap/js/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+<script>
+// ============================================
+// CAROUSEL AUTO SLIDE - MANUAL (PASTI BERJALAN)
+// ============================================
+(function() {
+    var slides = document.querySelectorAll('#heroCarousel .item');
+    var indicators = document.querySelectorAll('#carouselIndicators li');
+    var currentSlide = 0;
+    var totalSlides = slides.length;
+    var interval;
+    
+    function goToSlide(index) {
+        // Sembunyikan semua slide
+        slides.forEach(function(slide) {
+            slide.classList.remove('active');
+        });
+        // Tampilkan slide yang dipilih
+        slides[index].classList.add('active');
+        
+        // Update indicators
+        indicators.forEach(function(ind) {
+            ind.classList.remove('active');
+        });
+        indicators[index].classList.add('active');
+        
+        currentSlide = index;
+    }
+    
+    function nextSlide() {
+        var next = (currentSlide + 1) % totalSlides;
+        goToSlide(next);
+    }
+    
+    function prevSlide() {
+        var prev = (currentSlide - 1 + totalSlides) % totalSlides;
+        goToSlide(prev);
+    }
+    
+    function startAutoSlide() {
+        if (interval) clearInterval(interval);
+        interval = setInterval(nextSlide, 3000);
+    }
+    
+    function stopAutoSlide() {
+        if (interval) {
+            clearInterval(interval);
+            interval = null;
+        }
+    }
+    
+    // Event tombol next/prev
+    document.getElementById('carouselNext').addEventListener('click', function(e) {
+        e.preventDefault();
+        stopAutoSlide();
+        nextSlide();
+        startAutoSlide();
+    });
+    
+    document.getElementById('carouselPrev').addEventListener('click', function(e) {
+        e.preventDefault();
+        stopAutoSlide();
+        prevSlide();
+        startAutoSlide();
+    });
+    
+    // Event klik indicator
+    indicators.forEach(function(ind, idx) {
+        ind.addEventListener('click', function() {
+            stopAutoSlide();
+            goToSlide(idx);
+            startAutoSlide();
+        });
+    });
+    
+    // Hover pause
+    var carousel = document.getElementById('heroCarousel');
+    carousel.addEventListener('mouseenter', function() {
+        stopAutoSlide();
+    });
+    carousel.addEventListener('mouseleave', function() {
+        startAutoSlide();
+    });
+    
+    // Mulai auto slide
+    startAutoSlide();
+})();
+
+// ============================================
+// DATA KERANJANG & PESANAN
+// ============================================
+var cart = [];
+var orders = [];
+var selectedProduct = null;
+var ownerPhone = '6283116640192';
+
+// DOM
+var popup = document.getElementById('productPopup');
+var overlay = document.getElementById('popupOverlay');
+var cartPopup = document.getElementById('cartPopup');
+var cartOverlay = document.getElementById('cartOverlay');
+var orderPopup = document.getElementById('orderPopup');
+var orderOverlay = document.getElementById('orderOverlay');
+var notification = document.getElementById('notificationToast');
+var notifMsg = document.getElementById('notifMessage');
+var notifTotal = document.getElementById('notifTotal');
+var badge = document.getElementById('cartBadge');
+var orderBadge = document.getElementById('orderBadge');
+
+// ============================================
+// FUNGSI POPUP PRODUK
+// ============================================
+function openPopup(btn) {
+    var parent = btn.closest('.product-item');
+    if (!parent) return;
+    var name = parent.getAttribute('data-name');
+    var price = parseInt(parent.getAttribute('data-price'));
+    var img = parent.getAttribute('data-img') || '';
+    if (name && price) {
+        selectedProduct = { name: name, price: price, img: img };
+        document.getElementById('popupImg').src = img || 'https://placehold.co/120x120/eee/ccc?text=?';
+        document.getElementById('popupName').textContent = name;
+        document.getElementById('popupPrice').textContent = 'Rp ' + price.toLocaleString();
+        document.getElementById('popupQty').value = 1;
+        popup.style.display = 'block';
+        overlay.style.display = 'block';
+    }
+}
+
+function closePopup() {
+    popup.style.display = 'none';
+    overlay.style.display = 'none';
+    selectedProduct = null;
+}
+
+function qtyMinus() {
+    var val = parseInt(document.getElementById('popupQty').value) || 1;
+    if (val > 1) document.getElementById('popupQty').value = val - 1;
+}
+function qtyPlus() {
+    var val = parseInt(document.getElementById('popupQty').value) || 1;
+    document.getElementById('popupQty').value = val + 1;
+}
+
+// ============================================
+// FUNGSI KERANJANG
+// ============================================
+function addToCart() {
+    if (!selectedProduct) return;
+    var qty = parseInt(document.getElementById('popupQty').value) || 1;
+    var found = false;
+    for (var i = 0; i < cart.length; i++) {
+        if (cart[i].name === selectedProduct.name) {
+            cart[i].qty += qty;
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        cart.push({ name: selectedProduct.name, price: selectedProduct.price, qty: qty, img: selectedProduct.img });
+    }
+    updateBadge();
+    showNotification(selectedProduct.price * qty, '✅ Dimasukkan ke keranjang!');
+    closePopup();
+}
+
+function renderCart() {
+    var content = document.getElementById('cartContent');
+    var totalPrice = document.getElementById('cartTotalPrice');
+    if (cart.length === 0) {
+        content.innerHTML = '<div class="empty-cart"><span>🛒</span>Keranjang masih kosong</div>';
+        totalPrice.textContent = 'Rp 0';
+        return;
+    }
+    var html = '', total = 0;
+    for (var i = 0; i < cart.length; i++) {
+        var item = cart[i];
+        var subtotal = item.price * item.qty;
+        total += subtotal;
+        html += '<div class="cart-item">';
+        html += '<img src="' + (item.img || 'https://placehold.co/50x50/eee/ccc?text=?') + '">';
+        html += '<div class="item-info"><div class="item-name">' + item.name + '</div>';
+        html += '<div class="item-price">Rp ' + item.price.toLocaleString() + '</div>';
+        html += '<div class="item-qty">Jumlah: ' + item.qty + '</div></div>';
+        html += '<button class="btn-delete" onclick="hapusCart(' + i + ')">✕</button>';
+        html += '</div>';
+    }
+    content.innerHTML = html;
+    totalPrice.textContent = 'Rp ' + total.toLocaleString();
+}
+
+function hapusCart(idx) {
+    cart.splice(idx, 1);
+    updateBadge();
+    renderCart();
+    showNotification(0, '🗑️ Produk dihapus dari keranjang');
+}
+
+function emptyCart() {
+    if (cart.length === 0) return;
+    if (confirm('Yakin ingin mengosongkan keranjang?')) {
+        cart = [];
+        updateBadge();
+        renderCart();
+        showNotification(0, '🗑️ Keranjang dikosongkan');
+    }
+}
+
+function openCart() {
+    renderCart();
+    cartPopup.style.display = 'block';
+    cartOverlay.style.display = 'block';
+}
+
+function closeCart() {
+    cartPopup.style.display = 'none';
+    cartOverlay.style.display = 'none';
+}
+
+// ============================================
+// FUNGSI PESANAN
+// ============================================
+function renderOrders() {
+    var content = document.getElementById('orderContent');
+    if (orders.length === 0) {
+        content.innerHTML = '<div class="empty-cart"><span>📦</span>Belum ada pesanan</div>';
+        return;
+    }
+    var html = '';
+    for (var i = orders.length - 1; i >= 0; i--) {
+        var item = orders[i];
+        html += '<div class="cart-item" style="flex-direction:column;align-items:stretch;padding:15px 0;">';
+        html += '<div style="display:flex;justify-content:space-between;width:100%;">';
+        html += '<div><strong>#' + (i+1) + '</strong> ' + item.name + '</div>';
+        html += '<div style="color:#c44569;font-weight:600;">Rp ' + item.total.toLocaleString() + '</div>';
+        html += '</div>';
+        html += '<div style="font-size:12px;color:#888;">Jumlah: ' + item.qty + ' x Rp ' + item.price.toLocaleString() + '</div>';
+        html += '<div style="font-size:12px;color:#999;">📅 ' + item.date + '</div>';
+        html += '<span style="margin-top:5px;background:#28a745;color:white;padding:3px 10px;border-radius:12px;font-size:11px;display:inline-block;">✔ Selesai</span>';
+        html += '</div>';
+    }
+    content.innerHTML = html;
+}
+
+function openOrder() {
+    renderOrders();
+    orderPopup.style.display = 'block';
+    orderOverlay.style.display = 'block';
+}
+
+function closeOrder() {
+    orderPopup.style.display = 'none';
+    orderOverlay.style.display = 'none';
+}
+
+// ============================================
+// FUNGSI BELI - WHATSAPP
+// ============================================
+function buyNow() {
+    if (!selectedProduct) return;
+    var qty = parseInt(document.getElementById('popupQty').value) || 1;
+    var total = selectedProduct.price * qty;
+    
+    showNotification(total, '✅ Pembelian berhasil!');
+    
+    orders.push({ 
+        name: selectedProduct.name, 
+        price: selectedProduct.price, 
+        qty: qty, 
+        total: total, 
+        date: new Date().toLocaleString('id-ID') 
+    });
+    updateBadge();
+    
+    sendWAHidden(selectedProduct.name, selectedProduct.price, qty, total);
+    
+    closePopup();
+}
+
+function sendWAHidden(productName, price, qty, total) {
+    var msg = '🛍️ *PESANAN BARU DINI BEAUTY STORE*%0A%0A';
+    msg += '📋 *Detail Pesanan:*%0A';
+    msg += '• ' + productName + ' (Rp ' + price.toLocaleString() + ') x ' + qty + ' = Rp ' + total.toLocaleString() + '%0A%0A';
+    msg += '💰 *Total: Rp ' + total.toLocaleString() + '*%0A';
+    msg += '📅 Tanggal: ' + new Date().toLocaleString('id-ID') + '%0A%0A';
+    msg += '📍 Dini Beauty Store';
+    msg += '%0A📍 Desa Gohor Lama, Kecamatan Wampu, Kabupaten Langkat, Sumatera Utara';
+    
+    var iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = 'https://wa.me/' + ownerPhone + '?text=' + msg;
+    document.body.appendChild(iframe);
+    
+    setTimeout(function() {
+        iframe.remove();
+    }, 2000);
+}
+
+// ============================================
+// CHECKOUT
+// ============================================
+function checkout() {
+    if (cart.length === 0) { 
+        alert('Keranjang masih kosong!'); 
+        return; 
+    }
+    var total = 0, list = '';
+    for (var i = 0; i < cart.length; i++) {
+        var item = cart[i];
+        var subtotal = item.price * item.qty;
+        total += subtotal;
+        list += '• ' + item.name + ' (Rp ' + item.price.toLocaleString() + ') x ' + item.qty + ' = Rp ' + subtotal.toLocaleString() + '%0A';
+        orders.push({ 
+            name: item.name, 
+            price: item.price, 
+            qty: item.qty, 
+            total: subtotal, 
+            date: new Date().toLocaleString('id-ID') 
+        });
+    }
+    
+    showNotification(total, '✅ Checkout berhasil!');
+    updateBadge();
+    
+    var msg = '🛍️ *PESANAN BARU DINI BEAUTY STORE*%0A%0A';
+    msg += '📋 *Detail Pesanan:*%0A' + list;
+    msg += '%0A💰 *Total: Rp ' + total.toLocaleString() + '*%0A';
+    msg += '📅 Tanggal: ' + new Date().toLocaleString('id-ID') + '%0A';
+    msg += '📍 Dini Beauty Store';
+    msg += '%0A📍 Desa Gohor Lama, Kecamatan Wampu, Kabupaten Langkat, Sumatera Utara';
+    
+    var iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = 'https://wa.me/' + ownerPhone + '?text=' + msg;
+    document.body.appendChild(iframe);
+    setTimeout(function() { iframe.remove(); }, 2000);
+    
+    cart = [];
+    updateBadge();
+    renderCart();
+    closeCart();
+}
+
+// ============================================
+// FUNGSI NOTIFIKASI & BADGE
+// ============================================
+function showNotification(total, message) {
+    notifMsg.textContent = message;
+    notifTotal.textContent = 'Rp ' + total.toLocaleString();
+    notification.style.display = 'block';
+    clearTimeout(window.notifTimeout);
+    window.notifTimeout = setTimeout(function() { 
+        notification.style.display = 'none'; 
+    }, 4000);
+}
+
+function updateBadge() {
+    var total = 0;
+    for (var i = 0; i < cart.length; i++) total += cart[i].qty;
+    badge.textContent = total;
+    orderBadge.textContent = orders.length;
+}
+
+// ============================================
+// EVENT NAVBAR
+// ============================================
+document.getElementById('cartNavBtn').onclick = function(e) {
+    e.preventDefault();
+    openCart();
+};
+document.getElementById('orderNavBtn').onclick = function(e) {
+    e.preventDefault();
+    openOrder();
+};
+
+// Close popup dengan overlay
+overlay.onclick = closePopup;
+cartOverlay.onclick = closeCart;
+orderOverlay.onclick = closeOrder;
+
+// Init
+updateBadge();
+</script>
+</body>
+</html>
